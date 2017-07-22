@@ -4,11 +4,8 @@
 # malicious.
 
 require 'discordrb'
-require 'dotenv'
 
-Dotenv.load
-
-bot = Discordrb::Commands::CommandBot.new token: ENV['TOKEN'], client_id: ENV['CLIENT_ID'], prefix: '!'
+bot = Discordrb::Commands::CommandBot.new token: 'B0T.T0KEN.here', client_id: 160123456789876543, prefix: '!'
 
 bot.command(:eval, help_available: false) do |event, *code|
   break unless event.user.id == 66237334693085184 # Replace number with your ID

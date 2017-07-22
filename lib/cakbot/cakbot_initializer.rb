@@ -1,4 +1,5 @@
 require 'json'
+require 'discordrb'
 
 class CakBotInitializer
   def self.setup(bot)
@@ -18,11 +19,10 @@ class CakBotInitializer
       "¯\\_(ツ)_/¯"
     end
     bot.command :pjson, max_args: 1 do |_event, *args|
-      p args[0] if args[0]
       if args[0] == "-r" || args[0] == "readable"
-        print bot.commands.to_json
+        print bot.commands.to_json + "\n"
       else
-        p bot.commands.to_json
+        p bot.commands[:memes].mymethod#.to_json
       end
       "Done!"
     end
@@ -35,10 +35,14 @@ class CakBotInitializer
       p bot.commands[args[0].to_sym]
       "Done!"
     end
-    # bot.command :shutdown do
-    #   bot.send_message(event.channel.id, "GoodBye!")
-    #   exit
-    # end
+    bot.command(:off, help_available: false) do |event|
+      # This is a check that only allows a user with a specific ID to execute this command. Otherwise, everyone would be
+      # able to shut your bot down whenever they wanted.
+
+      bot.send_message(event.channel.id, "GoodBye")
+      exit
+    end
+
   end
 
   def self.setup_json(bot)

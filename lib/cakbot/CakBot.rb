@@ -1,5 +1,4 @@
-require 'discordrb'
-require_relative 'CakBotInitializer'
+require 'cakbot_initializer'
 
 
 class CakBot < Discordrb::Commands::CommandBot

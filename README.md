@@ -14,7 +14,7 @@ Create a .env file with the following information about your bot:
 
     CLIENT_ID = [clientid]
     CLIENT_SECRET = 'client secret here'
-    TOKEN = 'token here'`
+    TOKEN = 'token here'
 
 Then Run the file "lib/cakbot.rb"
 

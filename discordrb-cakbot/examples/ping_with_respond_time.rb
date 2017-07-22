@@ -2,11 +2,8 @@
 # responds with the time it took to send the message.
 
 require 'discordrb'
-require 'dotenv'
 
-Dotenv.load
-
-bot = Discordrb::Bot.new token: ENV['TOKEN'], client_id: ENV['CLIENT_ID']
+bot = Discordrb::Bot.new token: 'B0T.T0KEN.here', client_id: 160123456789876543
 
 bot.message(content: 'Ping!') do |event|
   # The `respond` method returns a `Message` object, which is stored in a variable `m`. The `edit` method is then called
