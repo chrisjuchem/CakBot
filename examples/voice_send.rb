@@ -5,8 +5,11 @@
 # example from the appropriate place, so that it has access to the files in that directory.
 
 require 'discordrb'
+require 'dotenv'
 
-bot = Discordrb::Commands::CommandBot.new token: 'B0T.T0KEN.here', client_id: 160123456789876543, prefix: '!'
+Dotenv.load
+
+bot = Discordrb::Commands::CommandBot.new token: ENV['TOKEN'], client_id: ENV['CLIENT_ID'], prefix: '!'
 
 bot.command(:connect) do |event|
   # The `voice_channel` method returns the voice channel the user is currently in, or `nil` if the user is not in a

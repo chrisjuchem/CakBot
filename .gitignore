@@ -1,6 +1,5 @@
 /.bundle/
 /.yardoc
-/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
@@ -11,3 +10,5 @@
 /.idea/
 .DS_Store
 *.gem
+
+.env

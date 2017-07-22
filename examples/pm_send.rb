@@ -1,8 +1,11 @@
 # This bot shows off PM functionality by sending a PM every time the bot is mentioned.
 
 require 'discordrb'
+require 'dotenv'
 
-bot = Discordrb::Bot.new token: 'B0T.T0KEN.here', client_id: 160123456789876543
+Dotenv.load
+
+bot = Discordrb::Bot.new token: ENV['TOKEN'], client_id: ENV['CLIENT_ID']
 
 # The `mention` event is called if the bot is *directly mentioned*, i.e. not using a role mention or @everyone/@here.
 bot.mention do |event|
