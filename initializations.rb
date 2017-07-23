@@ -14,6 +14,7 @@ require 'cakbot'
 
 require 'ext/string'
 require 'ext/command'
+require 'ext/bot'
 
 
 Dotenv.load

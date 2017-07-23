@@ -352,6 +352,8 @@ module Discordrb
     # @param embed [Hash, Discordrb::Webhooks::Embed, nil] The rich embed to append to this message.
     # @return [Message] The message that was sent.
     def send_message(channel, content, tts = false, embed = nil)
+      content = choose_random(content)
+
       channel = channel.resolve_id
       debug("Sending message to #{channel} with content '#{content}'")
 

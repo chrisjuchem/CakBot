@@ -2,6 +2,8 @@ class CakBotInitializer
   def self.setup(bot)
     # bot.custom_command :memes, {},
     #   ":regional_indicator_m: :regional_indicator_e: :regional_indicator_m: :regional_indicator_e: :regional_indicator_s:"
+    # bot.custom_command :roll, {},
+    #                    "1;2;3;4;5;6"
     bot.command :bold do |_event, *args|
       "**#{args.join(' ')}**"
     end
