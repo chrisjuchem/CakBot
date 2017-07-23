@@ -2,6 +2,22 @@
 
 Cak's Command bot for Discord®
 
+## Custom Commmand Syntax
+
+!addcomm [permitted flags] [args] output
+
+ - [permitted flags] - a list of the flags that this command is usable with
+   - use -- instead to make the flag implicit in all uses of the command
+ - [args] - $[type][?][*] 
+   - ? - Specifies an optional argument. Optional args must come last.
+   - \* - Specifies a text arg that may contain spaces. Must be final arg.
+     - ***TODO DETERMINE \*/? compatability***
+   - Supported types: ***TODO***
+
+### Flags
+
+ - -d : deletes the users message calling the bot
+
 ## Dependencies
 
 Uses ruby version 2.3.3, but probably also works with other versions just fine.

@@ -51,19 +51,14 @@ module Discordrb::Commands
     # @return [Command] The command that was added.
     def command(name, attributes = {}, &block)
       @commands ||= {}
-      if name.is_a? Array
-        new_command = nil
-
-        name.each do |e|
-          new_command = Command.new(e, attributes, &block)
-          @commands[e] = new_command
-        end
-
-        new_command
-      else
-        @commands[name] = Command.new(name, attributes, &block)
-      end
+      @commands[name] = Command.new(name, attributes, block)
     end
+
+    def custom_command(name, attributes = {}, str = '')
+      @commands ||= {}
+      @commands[name] = CustomCommand.new(name, attributes, str)
+    end
+
 
     # Removes a specific command from this container.
     # @param name [Symbol] The command to remove.

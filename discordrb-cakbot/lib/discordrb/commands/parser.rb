@@ -10,7 +10,7 @@ module Discordrb::Commands
     attr_reader :name
 
     # @!visibility private
-    def initialize(name, attributes = {}, &block)
+    def initialize(name, attributes = {}, block = '')
       @name = name
       @attributes = {
         # The lowest permission level that can use the command
@@ -60,7 +60,7 @@ module Discordrb::Commands
         bucket: attributes[:bucket]
       }
 
-      @block = block
+      @command = block
     end
 
     # Calls this command and executes the code inside.
@@ -98,7 +98,7 @@ module Discordrb::Commands
         end
       end
 
-      result = @block.call(event, *arguments)
+      result = @command.call(event, *arguments)
       event.drain_into(result)
     rescue LocalJumpError # occurs when breaking
       nil

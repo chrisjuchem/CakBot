@@ -1,11 +1,7 @@
-require 'json'
-require 'discordrb'
-
 class CakBotInitializer
   def self.setup(bot)
-    bot.command :memes do
-      ":regional_indicator_m: :regional_indicator_e: :regional_indicator_m: :regional_indicator_e: :regional_indicator_s:"
-    end
+    # bot.custom_command :memes, {},
+    #   ":regional_indicator_m: :regional_indicator_e: :regional_indicator_m: :regional_indicator_e: :regional_indicator_s:"
     bot.command :bold do |_event, *args|
       "**#{args.join(' ')}**"
     end
@@ -18,12 +14,8 @@ class CakBotInitializer
     bot.command :shrug do
       "¯\\_(ツ)_/¯"
     end
-    bot.command :pjson, max_args: 1 do |_event, *args|
-      if args[0] == "-r" || args[0] == "readable"
-        print bot.commands.to_json + "\n"
-      else
-        p bot.commands[:memes].mymethod#.to_json
-      end
+    bot.command :backup do
+      bot.save_to_file
       "Done!"
     end
     # bot.command :reload do
@@ -36,9 +28,6 @@ class CakBotInitializer
       "Done!"
     end
     bot.command(:off, help_available: false) do |event|
-      # This is a check that only allows a user with a specific ID to execute this command. Otherwise, everyone would be
-      # able to shut your bot down whenever they wanted.
-
       bot.send_message(event.channel.id, "GoodBye")
       exit
     end
@@ -46,23 +35,29 @@ class CakBotInitializer
   end
 
   def self.setup_json(bot)
-    command_json = "{\"help\":{\"name\":\"help\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":\"Shows a list of all the commands available or displays help for a specific command.\",\"usage\":\"help [command name]\",\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}},\"memes\":{\"name\":\"memes\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":null,\"usage\":null,\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":-1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}},\"bold\":{\"name\":\"bold\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":null,\"usage\":null,\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":-1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}},\"italic\":{\"name\":\"italic\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":null,\"usage\":null,\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":-1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}},\"invite\":{\"name\":\"invite\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":null,\"usage\":null,\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":-1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}},\"pjson\":{\"name\":\"pjson\",\"attributes\":{\"permission_level\":0,\"permission_message\":\"You don't have permission to execute command %name%!\",\"required_permissions\":[],\"required_roles\":[],\"channels\":null,\"chain_usable\":true,\"help_available\":true,\"description\":null,\"usage\":null,\"arg_types\":null,\"parameters\":null,\"min_args\":0,\"max_args\":1,\"rate_limit_message\":null,\"bucket\":null},\"block\":{}}}"
+    file = File.open('commands.json', 'r')
+    command_json = file.read
+    file.close
 
-    bot.load_commands(JSON.parse command_json, symbolize_names: true)
+    JSON.parse(command_json, symbolize_names: true).each do |name, attrs|
+      next unless attrs
+      command = attrs.delete(:command)
+      bot.custom_command name, attrs, command
+    end
   end
 
   def self.settings
     {
-        token: ENV['TOKEN'],
-        client_id: ENV['CLIENT_ID'],
+      token: ENV['TOKEN'],
+      client_id: ENV['CLIENT_ID'],
 
-        prefix: '!' #to parser block?
+      prefix: '!' #to parser block?
     }
   end
 
-  def self.boot
-    bot = CakBot::CakBot.new settings
-    setup(bot)
-    bot.run
-  end
+  # def self.boot
+  #   bot = CakBot::CakBot.new settings
+  #   setup(bot)
+  #   bot.run
+  # end
 end
