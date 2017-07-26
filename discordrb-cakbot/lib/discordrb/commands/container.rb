@@ -12,6 +12,9 @@ module Discordrb::Commands
     # @return [Hash<Symbol, Command>] hash of command names and commands this container has.
     attr_reader :commands
 
+    # @return [Hash<Symbol, Symbol>] hash of aliased commands to their implementations
+    attr_reader :aliases
+
     # Adds a new command to the container.
     # @param name [Symbol, Array<Symbol>] The name of the command to add, or an array of multiple names for the command
     # @param attributes [Hash] The attributes to initialize the command with.
@@ -66,6 +69,13 @@ module Discordrb::Commands
       @commands ||= {}
       @commands.delete name
     end
+
+    def alias(old, new)
+      @aliases ||= {}
+      @aliases[new] = old
+    end
+
+
 
     # Adds all commands from another container into this one. Existing commands will be overwritten.
     # @param container [Module] A module that `extend`s {CommandContainer} from which the commands will be added.

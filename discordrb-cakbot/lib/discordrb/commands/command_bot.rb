@@ -184,6 +184,7 @@ module Discordrb::Commands
       debug("Executing command #{name} with arguments #{arguments}")
       return unless @commands
       command = @commands[name]
+      return execute_command @aliases[name], event, arguments, chained, check_permissions if command.nil? && @aliases && @aliases[name]
       return unless !check_permissions || channels?(event.channel, @attributes[:channels]) ||
                     (command && !command.attributes[:channels].nil?)
       unless command

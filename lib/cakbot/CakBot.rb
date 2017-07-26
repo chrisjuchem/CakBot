@@ -11,6 +11,9 @@ class CakBot < Discordrb::Commands::CommandBot
     File.open('commands.json', 'w') do |f|
       f.puts commands.to_json
     end
+    File.open('aliases.json', 'w') do |f|
+      f.puts aliases.to_json
+    end
     puts "Bot information saved to file!"
   end
 end

@@ -17,6 +17,7 @@ Cak's Command bot for Discord®
 ### Flags
 
  - -d : deletes the users message calling the bot
+ - -temp [seconds] : The bot's response will disappear after [seconds] seconds.
 
 ## Dependencies
 

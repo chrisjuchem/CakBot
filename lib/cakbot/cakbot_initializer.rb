@@ -34,17 +34,40 @@ class CakBotInitializer
       exit
     end
 
+    bot.command :alias, min_args: 2, max_args: 2,
+                description: "Give another name to a command.",
+                usage: "!alias [old command] [new command]" do |event, *args|
+      old = args[0].to_sym
+      new = args[1].to_sym
+
+      if bot.commands[old]
+        bot.alias old, new
+      elsif bot.aliases && base = bot.aliases[old]
+        bot.alias base, new
+      else
+        event << "Command `!#{old}` does not exist!"
+        return
+      end
+      "`!#{args[0]}` can now also be called with `!#{args[1]}`."
+    end
+
   end
 
   def self.setup_json(bot)
     file = File.open('commands.json', 'r')
     command_json = file.read
     file.close
+    file = File.open('aliases.json', 'r')
+    alias_json = file.read
+    file.close
 
     JSON.parse(command_json, symbolize_names: true).each do |name, attrs|
       next unless attrs
       command = attrs.delete(:command)
       bot.custom_command name, attrs, command
+    end
+    JSON.parse(alias_json, symbolize_names: true).each do |name, command|
+      bot.alias command.to_sym, name
     end
   end
 
@@ -53,7 +76,8 @@ class CakBotInitializer
       token: ENV['TOKEN'],
       client_id: ENV['CLIENT_ID'],
 
-      prefix: '!' #to parser block?
+      prefix: '!', #to parser block?
+      command_doesnt_exist_message: "That command doesn't exist!"
     }
   end
 
