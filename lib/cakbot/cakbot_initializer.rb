@@ -33,7 +33,7 @@ class CakBotInitializer
     bot.command :alias, min_args: 2, max_args: 2,
                 arg_types: [Symbol, Symbol],
                 description: "Give another name to a command.",
-                usage: "!%command% [old command] [new command]" do |event, *args|
+                usage: "!%command% <old command> <new command>" do |event, *args|
       old, new = args
 
       if bot.commands[old]
@@ -113,6 +113,24 @@ class CakBotInitializer
       #-v here
       "Command `!#{name}` created!"
     end
+
+    bot.command :deletecommand, arg_types: [Symbol],
+                min_args: 1, max_args: 1,
+                description: "Delete a command. Base commands are only deleted until bot restart.",
+                usage: "!%command% <command name>" do |event, arg|
+      deleted = bot.aliases.delete(arg)
+      next "Alias `#{arg}` for `#{deleted}` deleted!" if deleted
+      deleted = bot.commands.delete(arg)
+      next "Command `#{arg}` not found!" unless deleted
+      bot.aliases.delete_if do |k, v|
+        delete = v == arg
+        event << "Alias `#{k}` for `#{v}` deleted!" if delete
+        delete
+      end
+      "Command `#{arg}` deleted!"
+    end
+
+    #bot.command :is_alias
   end
 
   def self.setup_json(bot)
@@ -139,7 +157,7 @@ class CakBotInitializer
       client_id: ENV['CLIENT_ID'],
 
       prefix: '!', #to parser block?
-      command_doesnt_exist_message: "The command `!%command_name%` doesn't exist!",
+      command_doesnt_exist_message: "The command `!%command%` doesn't exist!",
 
       advanced_functionality: true
     }
