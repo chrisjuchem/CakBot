@@ -5,7 +5,9 @@ require 'dotenv'
 require 'json'
 
 require 'discordrb'
-require 'custom_command'
+require 'ext/discordrb/command'
+require 'ext/discordrb/custom_command'
+require 'ext/discordrb/bot'
 
 require 'json_saver'
 
@@ -13,8 +15,7 @@ require 'cakbot_initializer'
 require 'cakbot'
 
 require 'ext/string'
-require 'ext/command'
-require 'ext/bot'
+require 'ext/array'
 
 
 Dotenv.load

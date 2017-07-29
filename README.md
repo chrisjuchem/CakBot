@@ -4,12 +4,13 @@ Cak's Command bot for Discord®
 
 ## Custom Commmand Syntax
 
-!addcomm [permitted flags] [args] output
+!addcomm \<name> [permitted flags] [args] \<output>
 
  - [permitted flags] - a list of the flags that this command is usable with
    - use -- instead to make the flag implicit in all uses of the command
- - [args] - $[type][?][*] 
+ - [args] - $[type][?][*]
    - ? - Specifies an optional argument. Optional args must come last.
+   - Reference thee argements with $1$, $2$, ... in the output
    - \* - Specifies a text arg that may contain spaces. Must be final arg.
      - ***TODO DETERMINE \*/? compatability***
    - Supported types: ***TODO***
@@ -17,11 +18,15 @@ Cak's Command bot for Discord®
 ### Flags
 
  - -d : deletes the users message calling the bot
- - -temp [seconds] : The bot's response will disappear after [seconds] seconds.
+ - -temp seconds> : The bot's response will disappear after the given amount of seconds.
+ - -q : quiet; no response from the bot
+ - -p : respond in a pm
+ - -v/l : long/verbose response
+ - -o <hash> : an options hash
 
 ## Dependencies
 
-Uses ruby version 2.3.3, but probably also works with other versions just fine.
+Uses ruby version 2.3.3, but probably also works with other versions just fine (2.1+ required for discord rb tho).
 
 Initially cloned from the dicordrb repository, then modified. Cloned from this commit: https://github.com/meew0/discordrb/commit/1de6923bd5e7001d5250c1bd8a78ff36be7d247e
 

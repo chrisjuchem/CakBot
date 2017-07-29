@@ -25,32 +25,94 @@ class CakBotInitializer
     #   boot
     #   "Done!"
     # end
-    bot.command :command, min_args: 1 do |_event, *args|
-      p bot.commands[args[0].to_sym]
-      "Done!"
-    end
-    bot.command(:off, help_available: false) do |event|
+    bot.command :off, help_available: false do |event|
       bot.send_message(event.channel.id, "GoodBye")
       exit
     end
 
     bot.command :alias, min_args: 2, max_args: 2,
+                arg_types: [Symbol, Symbol],
                 description: "Give another name to a command.",
-                usage: "!alias [old command] [new command]" do |event, *args|
-      old = args[0].to_sym
-      new = args[1].to_sym
+                usage: "!%command% [old command] [new command]" do |event, *args|
+      old, new = args
 
       if bot.commands[old]
         bot.alias old, new
       elsif bot.aliases && base = bot.aliases[old]
         bot.alias base, new
       else
-        event << "Command `!#{old}` does not exist!"
-        return
+        next "Command `!#{old}` does not exist!"
       end
       "`!#{args[0]}` can now also be called with `!#{args[1]}`."
     end
 
+
+    bot.command :addcommand, arg_types: [Symbol],
+                description: "Create a custom command.",
+                usage: "!%command% $... $?... \"<response>\"` \n" <<
+                       "`$` specifies a required argument, and `$?` an optional one.\n" <<
+                       "Reference arguments with `$1$`, `$2$`, ...`" do |_event, *args|
+
+      name = args.delete_at(0)
+      next "Error: That command already exists!" if bot.commands[name] || bot.aliases[name]
+
+      command = args.delete_at(-1)
+      implicit_flags = []
+      permitted_flags = []
+      min_args = 0
+      max_args = 0
+
+      parsing_flags = true
+      # parsing_args = false
+      args.each_with_index do |arg, i|
+
+        # unless parsing_args || parsing_flags
+        #   next "Invalid command syntax."
+        # end
+
+
+        if parsing_flags
+          if arg.start_with? '--'
+            implicit_flags << arg.delete('--')
+          elsif arg.start_with? '-'
+            permitted_flags << arg.delete('-')
+          else
+            parsing_flags = false
+            #parsing_args = true
+          end
+        end
+
+        # TODO: types
+        # TODO: *
+        unless parsing_flags # if parsing_args
+          next "Error: Invalid command syntax." unless arg.start_with? '$'
+          # add tyoe to array, then strip at end ::::: IntegerFloatTimebool, symbol rational range, emoji, user
+          if arg.end_with? '?'
+            max_args = min_args if max_args == 0
+            max_args += 1
+          else
+            next "Error: Optional arguments cannot be before required ones." unless max_args == 0
+            min_args += 1
+          end
+        end
+      end
+      max_args = min_args if max_args.zero?
+
+      puts "name: " + name.to_s
+      puts "command: " + command
+      puts "implicit_flags:" + implicit_flags.to_s
+      puts "permitted_flags:" + permitted_flags.to_s
+      puts "min_args:" + min_args.to_s
+      puts "max_args:" + max_args.to_s
+
+      opts = {}
+      opts[:max_args] = max_args unless max_args.zero?
+      opts[:min_args] = min_args # unless max_args.zero?
+      bot.custom_command name, opts, command
+
+      #-v here
+      "Command `!#{name}` created!"
+    end
   end
 
   def self.setup_json(bot)
@@ -77,7 +139,9 @@ class CakBotInitializer
       client_id: ENV['CLIENT_ID'],
 
       prefix: '!', #to parser block?
-      command_doesnt_exist_message: "That command doesn't exist!"
+      command_doesnt_exist_message: "The command `!%command_name%` doesn't exist!",
+
+      advanced_functionality: true
     }
   end
 

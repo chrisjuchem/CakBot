@@ -138,12 +138,13 @@ module Discordrb::Commands
       command(@attributes[:help_command], max_args: 1, description: 'Shows a list of all the commands available or displays help for a specific command.', usage: 'help [command name]') do |event, command_name|
         if command_name
           command = @commands[command_name.to_sym]
+          command = @commands[@aliases[command_name.to_sym]] unless command
           return "The command `#{command_name}` does not exist!" unless command
           desc = command.attributes[:description] || '*No description available*'
           usage = command.attributes[:usage]
           parameters = command.attributes[:parameters]
           result = "**`#{command_name}`**: #{desc}"
-          result += "\nUsage: `#{usage}`" if usage
+          result += "\nUsage: `#{usage.gsub('%command%', command_name.to_s)}`" if usage
           if parameters
             result += "\nAccepted Parameters:\n```"
             parameters.each { |p| result += "\n#{p}" }
@@ -154,6 +155,7 @@ module Discordrb::Commands
           available_commands = @commands.values.reject do |c|
             !c.attributes[:help_available] || !required_roles?(event.user, c.attributes[:required_roles]) || !required_permissions?(event.user, c.attributes[:required_permissions], event.channel)
           end
+          #todo add aliases to help command
           case available_commands.length
           when 0..5
             available_commands.reduce "**List of commands:**\n" do |memo, c|
