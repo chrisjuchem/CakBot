@@ -157,7 +157,7 @@ module Discordrb::Commands
           end
           #todo add aliases to help command
           case available_commands.length
-          when 0..5
+          when 0..50
             available_commands.reduce "**List of commands:**\n" do |memo, c|
               memo + "**`#{c.name}`**: #{c.attributes[:description] || '*No description available*'}\n"
             end

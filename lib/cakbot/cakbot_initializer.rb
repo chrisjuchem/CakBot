@@ -4,27 +4,22 @@ class CakBotInitializer
     #   ":regional_indicator_m: :regional_indicator_e: :regional_indicator_m: :regional_indicator_e: :regional_indicator_s:"
     # bot.custom_command :roll, {},
     #                    "1;2;3;4;5;6"
-    bot.command :bold do |_event, *args|
-      "**#{args.join(' ')}**"
-    end
-    bot.command :italic do |_event, *args|
-      "*#{args.join(' ')}*"
-    end
-    bot.command :invite do
-      "Invite me to another server: #{bot.invite_url}"
-    end
+    # bot.command :bold do |_event, *args|
+    #   "**#{args.join(' ')}**"
+    # end
+    # bot.command :italic do |_event, *args|
+    #   "*#{args.join(' ')}*"
+    # end
     bot.command :shrug do
       "¯\\_(ツ)_/¯"
     end
-    bot.command :backup do
+    bot.command :invite, description: "Get the invite URL to invite CakBot to another server." do
+      "Invite me to another server: #{bot.invite_url}"
+    end
+    bot.command :backup, help_available: false do
       bot.save_to_file
       "Done!"
     end
-    # bot.command :reload do
-    #   stop
-    #   boot
-    #   "Done!"
-    # end
     bot.command :off, help_available: false do |event|
       bot.send_message(event.channel.id, "GoodBye")
       exit
@@ -98,13 +93,6 @@ class CakBotInitializer
       end
       max_args = min_args if max_args.zero?
 
-      puts "name: " + name.to_s
-      puts "command: " + command
-      puts "implicit_flags:" + implicit_flags.to_s
-      puts "permitted_flags:" + permitted_flags.to_s
-      puts "min_args:" + min_args.to_s
-      puts "max_args:" + max_args.to_s
-
       opts = {}
       opts[:max_args] = max_args unless max_args.zero?
       opts[:min_args] = min_args # unless max_args.zero?
@@ -128,6 +116,50 @@ class CakBotInitializer
         delete
       end
       "Command `#{arg}` deleted!"
+    end
+
+    bot.command :featurerequest,
+                description: "Request a new feature for CakBot.",
+                usage: "!%command% <your request>" <<
+                    "These requests are logged to a file on Chris' computer where he will be able to read your suggestions later.\n" <<
+                    "Any and all serious requets are welcomed, from minor text tweaks to complex features." do |event, *args|
+      File.open 'requets.txt', 'a' do |f|
+        f.write "At #{Time.now}, #{event.author.username} requested:\n    "
+        f.write args.join(" ")
+        f.write "\n\n"
+      end
+      "Request saved."
+    end
+
+    bot.command :bugreport,
+                description: "Report a bug you've dicovered with CakBot.",
+                usage: "!%command% <your desciption of the bug>" <<
+                    "These reports are logged to a file on Chris' computer where he will be able to read your reports later.\n" <<
+                    "Please describe the unexpected behavior in as much detail as possible, including the commands entered and the output." do |event, *args|
+      File.open 'bugs.txt', 'a' do |f|
+        f.write "At #{Time.now}, #{event.author.username} reported:\n    "
+        f.write args.join(" ")
+        f.write "\n\n"
+      end
+      "Report saved."
+    end
+
+    bot.command :aliases, max_args: 1, arg_types: [Symbol],
+                desciption: "See a list of all command aliases",
+                usage: "!%command% [base command]" do |event, *args|
+      event << "Aliases:"
+      if args[0]
+        a = (bot.aliases.select{ |k, v| v == args[0] && bot.commands[v].attributes[:help_available] })
+               p a
+        a.keys.join(", ")
+      else
+
+        bot.aliases.each do |k, v|
+          event << "`#{k}` for `#{v}`" if bot.commands[v].attributes[:help_available]
+        end
+
+        next
+      end
     end
 
     #bot.command :is_alias
