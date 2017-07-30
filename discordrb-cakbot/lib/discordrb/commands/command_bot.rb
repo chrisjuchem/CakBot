@@ -139,12 +139,12 @@ module Discordrb::Commands
         if command_name
           command = @commands[command_name.to_sym]
           command = @commands[@aliases[command_name.to_sym]] unless command
-          return "The command `#{command_name}` does not exist!" unless command
+          next "The command `#{command_name}` does not exist!" unless command
           desc = command.attributes[:description] || '*No description available*'
           usage = command.attributes[:usage]
           parameters = command.attributes[:parameters]
           result = "**`#{command_name}`**: #{desc}"
-          result += "\nUsage: `#{usage.gsub('%command%', command_name.to_s)}`" if usage
+          result += "\nUsage: #{usage.gsub('%command%', command_name.to_s)}" if usage
           if parameters
             result += "\nAccepted Parameters:\n```"
             parameters.each { |p| result += "\n#{p}" }
@@ -157,7 +157,7 @@ module Discordrb::Commands
           end
           #todo add aliases to help command
           case available_commands.length
-          when 0..50
+          when 0..20
             available_commands.reduce "**List of commands:**\n" do |memo, c|
               memo + "**`#{c.name}`**: #{c.attributes[:description] || '*No description available*'}\n"
             end

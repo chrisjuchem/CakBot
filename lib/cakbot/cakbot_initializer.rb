@@ -28,8 +28,9 @@ class CakBotInitializer
     bot.command :alias, min_args: 2, max_args: 2,
                 arg_types: [Symbol, Symbol],
                 description: "Give another name to a command.",
-                usage: "!%command% <old command> <new command>" do |event, *args|
-      old, new = args
+                usage: "`!%command% <old command> <new command>`" do |event, old, new|
+      next "Command `!#{new}` already exists!" if bot.commands[new]
+      next "Alias `!#{new}` already exists!" if bot.aliases[new]
 
       if bot.commands[old]
         bot.alias old, new
@@ -38,15 +39,16 @@ class CakBotInitializer
       else
         next "Command `!#{old}` does not exist!"
       end
-      "`!#{args[0]}` can now also be called with `!#{args[1]}`."
+      "`!#{old}` can now also be called with `!#{new}`."
     end
 
 
-    bot.command :addcommand, arg_types: [Symbol],
+    bot.command :addcommand, min_args: 2, arg_types: [Symbol],
                 description: "Create a custom command.",
-                usage: "!%command% $... $?... \"<response>\"` \n" <<
+                usage: "`!%command% $... $?... \"<response>\"` \n" <<
                        "`$` specifies a required argument, and `$?` an optional one.\n" <<
-                       "Reference arguments with `$1$`, `$2$`, ...`" do |_event, *args|
+                       "Reference arguments with `$1$`, `$2$`, ...\n" <<
+                       "Responses separated by a semicolon will be chosen at random."do |_event, *args|
 
       name = args.delete_at(0)
       next "Error: That command already exists!" if bot.commands[name] || bot.aliases[name]
@@ -105,7 +107,7 @@ class CakBotInitializer
     bot.command :deletecommand, arg_types: [Symbol],
                 min_args: 1, max_args: 1,
                 description: "Delete a command. Base commands are only deleted until bot restart.",
-                usage: "!%command% <command name>" do |event, arg|
+                usage: "`!%command% <command name>`" do |event, arg|
       deleted = bot.aliases.delete(arg)
       next "Alias `#{arg}` for `#{deleted}` deleted!" if deleted
       deleted = bot.commands.delete(arg)
@@ -120,9 +122,9 @@ class CakBotInitializer
 
     bot.command :featurerequest,
                 description: "Request a new feature for CakBot.",
-                usage: "!%command% <your request>" <<
+                usage: "`!%command% <your request>`\n" <<
                     "These requests are logged to a file on Chris' computer where he will be able to read your suggestions later.\n" <<
-                    "Any and all serious requets are welcomed, from minor text tweaks to complex features." do |event, *args|
+                    "Any and all serious requests are welcomed, from minor text tweaks to complex features." do |event, *args|
       File.open 'requets.txt', 'a' do |f|
         f.write "At #{Time.now}, #{event.author.username} requested:\n    "
         f.write args.join(" ")
@@ -133,7 +135,7 @@ class CakBotInitializer
 
     bot.command :bugreport,
                 description: "Report a bug you've dicovered with CakBot.",
-                usage: "!%command% <your desciption of the bug>" <<
+                usage: "`!%command% <your desciption of the bug>`\n" <<
                     "These reports are logged to a file on Chris' computer where he will be able to read your reports later.\n" <<
                     "Please describe the unexpected behavior in as much detail as possible, including the commands entered and the output." do |event, *args|
       File.open 'bugs.txt', 'a' do |f|
@@ -146,7 +148,7 @@ class CakBotInitializer
 
     bot.command :aliases, max_args: 1, arg_types: [Symbol],
                 desciption: "See a list of all command aliases",
-                usage: "!%command% [base command]" do |event, *args|
+                usage: "`!%command% [base command]`" do |event, *args|
       event << "Aliases:"
       if args[0]
         a = (bot.aliases.select{ |k, v| v == args[0] && bot.commands[v].attributes[:help_available] })
