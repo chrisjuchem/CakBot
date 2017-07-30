@@ -108,6 +108,8 @@ class CakBotInitializer
                 min_args: 1, max_args: 1,
                 description: "Delete a command. Base commands are only deleted until bot restart.",
                 usage: "`!%command% <command name>`" do |event, arg|
+      next "Fuck off Nick" if event.author.username == "zovt"
+
       deleted = bot.aliases.delete(arg)
       next "Alias `#{arg}` for `#{deleted}` deleted!" if deleted
       deleted = bot.commands.delete(arg)
