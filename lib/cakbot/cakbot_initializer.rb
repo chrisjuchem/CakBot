@@ -42,10 +42,9 @@ class CakBotInitializer
       "`!#{old}` can now also be called with `!#{new}`."
     end
 
-
     bot.command :addcommand, min_args: 2, arg_types: [Symbol],
                 description: "Create a custom command.",
-                usage: "`!%command% $... $?... \"<response>\"` \n" <<
+                usage: "`!%command% <name> $... $?... \"<response>\"` \n" <<
                        "`$` specifies a required argument, and `$?` an optional one.\n" <<
                        "Reference arguments with `$1$`, `$2$`, ...\n" <<
                        "Responses separated by a semicolon will be chosen at random."do |_event, *args|
@@ -111,15 +110,15 @@ class CakBotInitializer
       next "Fuck off Nick" if event.author.username == "zovt"
 
       deleted = bot.aliases.delete(arg)
-      next "Alias `#{arg}` for `#{deleted}` deleted!" if deleted
+      next "Alias !`#{arg}` for !`#{deleted}` deleted!" if deleted
       deleted = bot.commands.delete(arg)
-      next "Command `#{arg}` not found!" unless deleted
+      next "Command !`#{arg}` not found!" unless deleted
       bot.aliases.delete_if do |k, v|
         delete = v == arg
-        event << "Alias `#{k}` for `#{v}` deleted!" if delete
+        event << "Alias !`#{k}` for !`#{v}` deleted!" if delete
         delete
       end
-      "Command `#{arg}` deleted!"
+      "Command !`#{arg}` deleted!"
     end
 
     bot.command :featurerequest,
@@ -127,7 +126,7 @@ class CakBotInitializer
                 usage: "`!%command% <your request>`\n" <<
                     "These requests are logged to a file on Chris' computer where he will be able to read your suggestions later.\n" <<
                     "Any and all serious requests are welcomed, from minor text tweaks to complex features." do |event, *args|
-      File.open 'requets.txt', 'a' do |f|
+      File.open 'requests.txt', 'a' do |f|
         f.write "At #{Time.now}, #{event.author.username} requested:\n    "
         f.write args.join(" ")
         f.write "\n\n"
@@ -166,15 +165,19 @@ class CakBotInitializer
       end
     end
 
+    # bot.command :user, description: "Get the current user. Use `[!user] in another command to sub in the user's name." do |event|
+    #   event.author.username
+    # end
+
     #bot.command :is_alias
   end
 
   def self.setup_json(bot)
     file = File.open('commands.json', 'r')
-    command_json = file.read
+    command_json = file.read.force_encoding("UTF-8")
     file.close
     file = File.open('aliases.json', 'r')
-    alias_json = file.read
+    alias_json = file.read.force_encoding("UTF-8")
     file.close
 
     JSON.parse(command_json, symbolize_names: true).each do |name, attrs|

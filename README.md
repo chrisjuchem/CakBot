@@ -14,6 +14,7 @@ Cak's Command bot for Discord®
    - \* - Specifies a text arg that may contain spaces. Must be final arg.
      - ***TODO DETERMINE \*/? compatability***
    - Supported types: ***TODO***
+   - ***TODO: default arguments***
 
 ### Flags
 

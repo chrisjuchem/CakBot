@@ -1,4 +1,4 @@
-At 2017-07-29 23:58:07 -0400, juchem69z reported:
+    *Fixed for v0.1.2* At 2017-07-29 23:58:07 -0400, juchem69z reported:
     Emojis don't serialize correctly
 
     *Fixed for v0.1.1* At 2017-07-30 11:49:37 -0400, juchem69z reported:
@@ -6,4 +6,7 @@ At 2017-07-29 23:58:07 -0400, juchem69z reported:
 
     *Fixed for v0.1.1* At 2017-07-30 11:51:30 -0400, juchem69z reported:
     addcommand needs two args min
+
+At 2017-08-06 13:43:33 -0400, juchem69z reported:
+    addcommand no args throws errors
 
