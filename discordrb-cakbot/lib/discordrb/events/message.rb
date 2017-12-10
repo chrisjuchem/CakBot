@@ -13,8 +13,8 @@ module Discordrb::Events
     # because it avoids rate limiting problems
     # @param content [String] The message to send to the channel
     # @return [Discordrb::Message] the message that was sent
-    def send_message(content)
-      channel.send_message(content)
+    def send_message(content, opts = {})
+      channel.send_message(content, opts[:tts])
     end
 
     # Sends a temporary message to the channel this message was sent in, right now.

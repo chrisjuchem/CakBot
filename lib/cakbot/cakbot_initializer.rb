@@ -97,6 +97,7 @@ class CakBotInitializer
       opts = {}
       opts[:max_args] = max_args unless max_args.zero?
       opts[:min_args] = min_args # unless max_args.zero?
+      opts[:tts] = implicit_flags.include?("tts")
       bot.custom_command name, opts, command
 
       #-v here

@@ -57,7 +57,10 @@ module Discordrb::Commands
         rate_limit_message: attributes[:rate_limit_message],
 
         # Rate limiting bucket (nil for no rate limiting)
-        bucket: attributes[:bucket]
+        bucket: attributes[:bucket],
+
+        #Use text-to-speech?
+        tts: attributes[:tts] || false
       }
 
       @command = block

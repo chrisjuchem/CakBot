@@ -202,7 +202,7 @@ module Discordrb::Commands
          !check_permissions
         event.command = command
         result = command.call(event, arguments, chained, check_permissions)
-        stringify(result)
+        [stringify(result), { tts: command.attributes[:tts] }]
       else
         event.respond command.attributes[:permission_message].gsub('%name%', name.to_s) if command.attributes[:permission_message]
         nil
@@ -420,13 +420,14 @@ module Discordrb::Commands
         Thread.current[:discordrb_name] = "ct-#{@current_thread += 1}"
         begin
           debug("Parsing command chain #{chain}")
-          result = @attributes[:advanced_functionality] ? CommandChain.new(chain, self).execute(event) : simple_execute(chain, event)
+          result, result_opts = @attributes[:advanced_functionality] ? CommandChain.new(chain, self).execute(event) : simple_execute(chain, event)
           result = event.drain_into(result)
 
           if event.file
             event.send_file(event.file, caption: result)
           else
-            event.respond result unless result.nil? || result.empty?
+            event.respond(result, result_opts || {}) unless result.nil? || result.empty?
+                  # ^ alias for send_message
           end
         rescue => e
           log_exception(e)

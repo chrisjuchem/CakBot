@@ -17,7 +17,10 @@ Cak's Command bot for Discord®
    - ***TODO: default arguments***
 
 ### Flags
+Implemented
+ - -tts : use text-to-speech (implicit only)
 
+Unimplemented
  - -d : deletes the users message calling the bot
  - -temp seconds> : The bot's response will disappear after the given amount of seconds.
  - -q : quiet; no response from the bot
