@@ -94,10 +94,13 @@ class CakBotInitializer
       end
       max_args = min_args if max_args.zero?
 
+      next "Cannot include the same flag as both implicit and optional" if (implicit_flags & permitted_flags).size > 0
+
       opts = {}
       opts[:max_args] = max_args unless max_args.zero?
       opts[:min_args] = min_args # unless max_args.zero?
-      opts[:tts] = implicit_flags.include?("tts")
+      opts[:implicit_flags] = implicit_flags
+      opts[:permitted_flags] = permitted_flags
       bot.custom_command name, opts, command
 
       #-v here
@@ -199,7 +202,9 @@ class CakBotInitializer
       prefix: '!', #to parser block?
       command_doesnt_exist_message: "The command `!%command%` doesn't exist!",
 
-      advanced_functionality: true
+      advanced_functionality: true,
+
+      enabled_flags: ["tts"]
     }
   end
 

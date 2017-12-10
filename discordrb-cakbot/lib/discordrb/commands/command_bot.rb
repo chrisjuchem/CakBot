@@ -126,7 +126,10 @@ module Discordrb::Commands
         quote_start: attributes[:quote_start] || '"',
 
         # Quoted mode ending character
-        quote_end: attributes[:quote_end] || '"'
+        quote_end: attributes[:quote_end] || '"',
+
+        # Flags that the parser will attempt to use, all others ignored
+        enabled_flags: attributes[:enabled_flags] || []
       }
 
       @permissions = {
@@ -194,6 +197,7 @@ module Discordrb::Commands
         return
       end
       return unless !check_permissions || channels?(event.channel, command.attributes[:channels])
+      flags = extract_flags(arguments) # mutates arguments to remove the flags
       arguments = arg_check(arguments, command.attributes[:arg_types], event.server) if check_permissions
       if (check_permissions &&
          permission?(event.author, command.attributes[:permission_level], event.server) &&
@@ -202,7 +206,7 @@ module Discordrb::Commands
          !check_permissions
         event.command = command
         result = command.call(event, arguments, chained, check_permissions)
-        [stringify(result), { tts: command.attributes[:tts] }]
+        [stringify(result), execution_options(command, flags)]
       else
         event.respond command.attributes[:permission_message].gsub('%name%', name.to_s) if command.attributes[:permission_message]
         nil

@@ -59,8 +59,11 @@ module Discordrb::Commands
         # Rate limiting bucket (nil for no rate limiting)
         bucket: attributes[:bucket],
 
-        #Use text-to-speech?
-        tts: attributes[:tts] || false
+        # Permitted flags. Flags included in a command call other than these will be ignored
+        permitted_flags: attributes[:permitted_flags] || [],
+
+        # Implicit flags. Any flags here will be added to the list of flags for every call of this command
+        implicit_flags: attributes[:implicit_flags] || []
       }
 
       @command = block

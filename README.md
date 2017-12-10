@@ -18,7 +18,7 @@ Cak's Command bot for Discord®
 
 ### Flags
 Implemented
- - -tts : use text-to-speech (implicit only)
+ - -tts : use text-to-speech
 
 Unimplemented
  - -d : deletes the users message calling the bot

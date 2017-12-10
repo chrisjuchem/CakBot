@@ -8,6 +8,7 @@ require 'discordrb'
 require 'ext/discordrb/command'
 require 'ext/discordrb/custom_command'
 require 'ext/discordrb/bot'
+require 'ext/discordrb/command_bot'
 
 require 'json_saver'
 
