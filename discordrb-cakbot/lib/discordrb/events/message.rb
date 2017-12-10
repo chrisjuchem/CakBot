@@ -14,6 +14,7 @@ module Discordrb::Events
     # @param content [String] The message to send to the channel
     # @return [Discordrb::Message] the message that was sent
     def send_message(content, opts = {})
+      message.delete if opts[:d] rescue channel.send_message("(Sorry, but I don't have permission to delete the calling message)")
       channel.send_message(content, opts[:tts])
     end
 

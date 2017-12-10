@@ -19,10 +19,10 @@ Cak's Command bot for Discord®
 ### Flags
 Implemented
  - -tts : use text-to-speech
+ - -d : deletes the users message calling the bot (requires ManageMessages permission)
 
 Unimplemented
- - -d : deletes the users message calling the bot
- - -temp seconds> : The bot's response will disappear after the given amount of seconds.
+ - -temp <seconds> : The bot's response will disappear after the given amount of seconds.
  - -q : quiet; no response from the bot
  - -p : respond in a pm
  - -v/l : long/verbose response
