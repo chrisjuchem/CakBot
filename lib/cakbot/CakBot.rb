@@ -16,4 +16,18 @@ class CakBot < Discordrb::Commands::CommandBot
     end
     puts "Bot information saved to file!"
   end
+
+  def copy_to_backup_file
+    File.open('commands.backup', 'w') do |b|
+      File.open('commands.json', 'r') do |j|
+        b.puts j.read
+      end
+    end
+    File.open('aliases.backup', 'w') do |b|
+      File.open('aliases.json', 'r') do |j|
+        b.puts j.read
+      end
+    end
+    puts "Backup copied!"
+  end
 end

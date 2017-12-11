@@ -16,8 +16,13 @@ class CakBotInitializer
     bot.command :invite, description: "Get the invite URL to invite CakBot to another server." do
       "Invite me to another server: #{bot.invite_url}"
     end
+    bot.command :save, help_available: false do
+      bot.save_to_file
+      "Done!"
+    end
     bot.command :backup, help_available: false do
       bot.save_to_file
+      bot.copy_to_backup_file
       "Done!"
     end
     bot.command :off, help_available: false do |event|

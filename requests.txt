@@ -4,6 +4,9 @@ At 2017-07-30 01:38:04 -0400, jmackk requested:
 At 2017-08-06 13:43:51 -0400, juchem69z requested:
     case insensitive commands
 
-At 2017-08-26 16:22:40 -0400, juchem69z requested:
+    *Added for version 0.2.0* At 2017-08-26 16:22:40 -0400, juchem69z requested:
     backup becomes save, add backup + restore commands
+
+At 2017-12-10 21:26:08 -0500, juchem69z requested:
+    ability to add usage and descriptions to custom commands
 
