@@ -20,11 +20,11 @@ Cak's Command bot for Discord®
 Implemented
  - -tts : use text-to-speech
  - -d : deletes the users message calling the bot (requires ManageMessages permission)
+ - -p : respond in a pm
 
 Unimplemented
  - -temp <seconds> : The bot's response will disappear after the given amount of seconds.
  - -q : quiet; no response from the bot
- - -p : respond in a pm
  - -v/l : long/verbose response
  - -o <hash> : an options hash
 

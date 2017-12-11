@@ -204,7 +204,7 @@ class CakBotInitializer
 
       advanced_functionality: true,
 
-      enabled_flags: %w[tts d]
+      enabled_flags: %w[tts d p]
     }
   end
 

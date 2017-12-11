@@ -15,7 +15,12 @@ module Discordrb::Events
     # @return [Discordrb::Message] the message that was sent
     def send_message(content, opts = {})
       message.delete if opts[:d] rescue channel.send_message("(Sorry, but I don't have permission to delete the calling message)")
-      channel.send_message(content, opts[:tts])
+
+      if opts[:p]
+        author.pm(content, opts[:tts])
+      else
+        channel.send_message(content, opts[:tts])
+      end
     end
 
     # Sends a temporary message to the channel this message was sent in, right now.
