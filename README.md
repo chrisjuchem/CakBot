@@ -1,4 +1,4 @@
-# CakBot
+﻿# CakBot
 
 Cak's Command bot for Discord®
 
@@ -42,17 +42,11 @@ Create a .env file with the following information about your bot:
     CLIENT_SECRET = 'client secret here'
     TOKEN = 'token here'
 
-Then Run the file "lib/cakbot.rb"
+Then Run the file "cakbot_script.rb"
 
 ## License
 
 The bot is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
-## Specs
-
-I don't intend to maintain the original specs as I modify the Discordrb source.
-
-I might write specs for my own code but ¯\_(ツ)_/¯
 
 ## Notes from the original README
 
