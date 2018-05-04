@@ -207,7 +207,7 @@ class CakBotInitializer
       prefix: '!', #to parser block?
       command_doesnt_exist_message: "The command `!%command%` doesn't exist!",
 
-      #advanced_functionality: true,
+      advanced_functionality: true,
 
       enabled_flags: %w[tts d p]
     }
