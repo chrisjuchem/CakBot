@@ -26,6 +26,9 @@ class CakBotInitializer
       "Done!"
     end
     bot.command :off, help_available: false do |event|
+      next "Fuck off Nick" if event.author.username == "zovt"
+      next "Fuck off David" if event.author.username == "Ikgrid"
+
       bot.send_message(event.channel.id, "GoodBye")
       exit
     end
@@ -117,6 +120,8 @@ class CakBotInitializer
                 description: "Delete a command. Base commands are only deleted until bot restart.",
                 usage: "`!%command% <command name>`" do |event, arg|
       next "Fuck off Nick" if event.author.username == "zovt"
+      next "Fuck off David" if event.author.username == "Ikgrid"
+
 
       deleted = bot.aliases.delete(arg)
       next "Alias !`#{arg}` for !`#{deleted}` deleted!" if deleted
